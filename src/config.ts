@@ -41,9 +41,8 @@ export const SITE = {
   openingHours: 'Po – Pi: 7:00 – 17:00',
   openingHoursSchema: 'Mo-Fr 07:00-17:00',
 
-  // Kontaktný formulár – bezplatný kľúč z https://web3forms.com (zadajte email kmkelmont@gmail.com)
-  // TODO: vložte access key. Bez neho formulár ponúkne odoslanie cez emailového klienta.
-  web3formsKey: '',
+  // Kontaktný formulár – access key z https://web3forms.com (správy chodia na kmkelmont@gmail.com)
+  web3formsKey: 'c0792997-2dd0-48b3-9dd0-ea575ff53355',
 
   // Sociálne siete (nepovinné) – napr. 'https://www.facebook.com/...'
   facebook: '',
