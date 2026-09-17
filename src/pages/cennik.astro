@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { SITE, u } from '../config';
+
+const factors = [
+  { icon: 'home', title: 'Rozsah prác', text: 'Veľkosť bytu či domu, počet miestností, zásuviek, svetelných okruhov.' },
+  { icon: 'wrench', title: 'Typ zákazky', text: 'Novostavba je iná ako rekonštrukcia, kde treba odstrániť staré rozvody.' },
+  { icon: 'plug', title: 'Materiál', text: 'Káble, rozvádzač, ističe, dizajn zásuviek a vypínačov – podľa vášho výberu.' },
+  { icon: 'clock', title: 'Termín a náročnosť', text: 'Stav stien a prístupnosť, prípadná koordinácia s ďalšími remeselníkmi.' },
+];
+
+const faq = [
+  {
+    q: 'Prečo nemáte na webe pevný cenník?',
+    a: 'Každá elektroinštalácia je iná. Pevný cenník by bol buď nepresný, alebo plný výnimiek. Po obhliadke vám dám konkrétnu cenu pre vašu zákazku.',
+  },
+  {
+    q: 'Je obhliadka záväzná?',
+    a: 'Nie. Obhliadka slúži na to, aby som vedel pripraviť presnú cenovú ponuku. Rozhodnutie je potom na vás.',
+  },
+  {
+    q: 'Dostanem cenovú ponuku písomne?',
+    a: 'Áno, po obhliadke vám cenovú ponuku pošlem, aby ste mali prehľad o rozsahu prác a cene.',
+  },
+  {
+    q: 'Zabezpečíte aj materiál?',
+    a: 'Áno, materiál viem zabezpečiť. Ak máte vlastné zásuvky, vypínače či svietidlá, dohodneme sa.',
+  },
+  {
+    q: 'Kam dochádzate?',
+    a: `Pôsobím v lokalite ${SITE.city} a okolie – napríklad ${SITE.serviceArea.slice(1, 5).join(', ')}. Ak ste inde, pokojne sa ozvite.`,
+  },
+];
+
+const faqSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Layout
+  title="Cenník elektroinštalačných prác"
+  description={`Cena elektroinštalácie a rekonštrukcie podľa dohody po obhliadke. Férová cenová ponuka na mieru pre domy a byty – ${SITE.city} a okolie.`}
+  schema={faqSchema}
+>
+  <PageHero
+    eyebrow="Cenník"
+    title="Cena podľa dohody po obhliadke"
+    lead="Žiadne orientačné tabuľky, ktoré nakoniec neplatia. Pozriem sa na vašu zákazku a pripravím cenovú ponuku presne podľa rozsahu prác."
+    crumbs={[{ href: '/cennik/', label: 'Cenník' }]}
+  >
+    <a href={u('/kontakt/')} class="btn-primary mt-8">Dohodnúť obhliadku <Icon name="arrow" class="h-5 w-5" /></a>
+  </PageHero>
+
+  <section class="container-page mt-16 grid gap-6 lg:grid-cols-3">
+    <div class="card lg:col-span-1 !bg-navy-800 !border-navy-800 text-white">
+      <p class="text-sm font-semibold uppercase tracking-wider text-sky-brand">Ako to funguje</p>
+      <ol class="mt-5 space-y-5">
+        {['Ozvete sa mi', 'Dohodneme obhliadku', 'Pošlem cenovú ponuku', 'Po odsúhlasení začneme'].map((s, i) => (
+          <li class="flex items-center gap-4">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-volt font-bold text-navy-950">{i + 1}</span>
+            <span class="text-lg font-semibold">{s}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:col-span-2">
+      {factors.map((f) => (
+        <div class="card">
+          <span class="grid h-11 w-11 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name={f.icon} /></span>
+          <h2 class="mt-4 text-lg font-bold">{f.title}</h2>
+          <p class="mt-2 leading-relaxed text-navy-700">{f.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-page mt-24 max-w-3xl">
+    <div class="text-center">
+      <p class="eyebrow">Časté otázky</p>
+      <h2 class="text-3xl font-extrabold sm:text-4xl">Otázky o cene</h2>
+    </div>
+    <div class="mt-10"><Faq items={faq} /></div>
+  </section>
+
+  <CtaBanner title="Chcete vedieť, koľko to bude stáť?" text="Napíšte mi, čo plánujete, a dohodneme si obhliadku." />
+</Layout>

@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config';
+---
+<Layout title="Ochrana osobných údajov" description={`Informácie o spracovaní osobných údajov – ${SITE.legalName}.`}>
+  <PageHero title="Ochrana osobných údajov" crumbs={[{ href: '/ochrana-osobnych-udajov/', label: 'Ochrana osobných údajov' }]} />
+
+  <!-- Vzorový text – odporúčame dať skontrolovať odborníkovi na GDPR. -->
+  <section class="container-page prose-sk mt-12 max-w-3xl">
+    <h2>Prevádzkovateľ</h2>
+    <p>{SITE.legalName}, {SITE.postalCode} {SITE.city}, IČO: {SITE.ico}, e-mail: <a href={`mailto:${SITE.email}`} class="font-semibold underline">{SITE.email}</a>.</p>
+
+    <h2>Aké údaje spracúvame</h2>
+    <p>Ak nás kontaktujete cez formulár, e-mail alebo telefonicky, spracúvame údaje, ktoré nám poskytnete: meno, telefónne číslo, e-mail, obec a obsah správy.</p>
+
+    <h2>Účel a právny základ</h2>
+    <ul>
+      <li>vybavenie vášho dopytu a príprava cenovej ponuky – opatrenia pred uzavretím zmluvy (čl. 6 ods. 1 písm. b) GDPR),</li>
+      <li>plnenie zmluvy a zákonných povinností, napr. účtovníctvo (čl. 6 ods. 1 písm. b) a c) GDPR).</li>
+    </ul>
+
+    <h2>Doba uchovávania</h2>
+    <p>Údaje z dopytov uchovávame najviac 1 rok od posledného kontaktu, ak z nich nevznikne zmluvný vzťah. Účtovné doklady uchovávame po dobu stanovenú zákonom.</p>
+
+    <h2>Príjemcovia</h2>
+    <p>Na odoslanie formulára využívame službu Web3Forms, ktorá správu doručí na náš e-mail. Údaje neposkytujeme tretím stranám na marketingové účely.</p>
+
+    <h2>Vaše práva</h2>
+    <p>Máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo podať sťažnosť na Úrad na ochranu osobných údajov SR. Svoje práva môžete uplatniť e-mailom na {SITE.email}.</p>
+
+    <h2>Cookies</h2>
+    <p>Tento web nepoužíva analytické ani marketingové cookies. Na stránke Kontakt je vložená mapa Google, ktorá môže používať vlastné cookies spoločnosti Google.</p>
+  </section>
+</Layout>

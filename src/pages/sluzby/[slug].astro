@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import { abs, BUSINESS_ID, SITE, u } from '../../config';
+import { SERVICES, type Service } from '../../data/services';
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: Service };
+const others = SERVICES.filter((s) => s.slug !== service.slug);
+const url = abs(`/sluzby/${service.slug}/`);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.seoDescription,
+    serviceType: service.title,
+    provider: { '@id': BUSINESS_ID },
+    areaServed: SITE.serviceArea.map((c) => ({ '@type': 'City', name: c })),
+    url,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Domov', item: abs('/') },
+      { '@type': 'ListItem', position: 2, name: 'Služby', item: abs('/sluzby/') },
+      { '@type': 'ListItem', position: 3, name: service.title, item: url },
+    ],
+  },
+];
+---
+<Layout title={service.seoTitle} description={service.seoDescription} schema={schema}>
+  <PageHero
+    eyebrow={`${SITE.city} a okolie`}
+    title={service.title}
+    lead={service.intro}
+    crumbs={[{ href: '/sluzby/', label: 'Služby' }, { href: '', label: service.title }]}
+  >
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={u('/kontakt/')} class="btn-primary">Dohodnúť obhliadku <Icon name="arrow" class="h-5 w-5" /></a>
+      <a href={u('/cennik/')} class="btn-secondary">Ako tvorím cenu</a>
+    </div>
+  </PageHero>
+
+  <section class="container-page mt-16 grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+    <div>
+      <h2 class="text-2xl font-extrabold sm:text-3xl">Čo služba zahŕňa</h2>
+      <ul class="mt-6 space-y-3">
+        {service.includes.map((x) => (
+          <li class="flex gap-3 rounded-xl border border-navy-100 bg-white px-4 py-3 text-navy-800">
+            <Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-sky-brand" />{x}
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="mt-12 text-2xl font-extrabold sm:text-3xl">Pre koho je určená</h2>
+      <ul class="mt-6 flex flex-wrap gap-3">
+        {service.forWhom.map((x) => (
+          <li class="rounded-full bg-sky-soft px-4 py-2 font-semibold text-navy-800">{x}</li>
+        ))}
+      </ul>
+    </div>
+
+    <aside class="space-y-5">
+      <Placeholder label={`Foto: ${service.title.toLowerCase()}`} />
+      <div class="card bg-volt-soft/60">
+        <h2 class="text-lg font-bold">Koľko to bude stáť?</h2>
+        <p class="mt-2 leading-relaxed text-navy-700">
+          Každá zákazka je iná. Cenu stanovím po obhliadke podľa rozsahu prác a materiálu – dohodneme ju vopred.
+        </p>
+        <a href={u('/kontakt/')} class="mt-4 inline-flex items-center gap-1 font-semibold text-navy-900 hover:text-sky-brand">Požiadať o ponuku <Icon name="arrow" class="h-4 w-4" /></a>
+      </div>
+    </aside>
+  </section>
+
+  <section class="container-page mt-20">
+    <h2 class="text-2xl font-extrabold">Ďalšie služby</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      {others.map((s) => (
+        <a href={u(`/sluzby/${s.slug}/`)} class="card flex items-center gap-4 transition hover:border-sky-brand/50">
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name={s.icon} /></span>
+          <span class="font-bold text-navy-900">{s.title}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

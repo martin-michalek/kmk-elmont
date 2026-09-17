@@ -1,0 +1,28 @@
+---
+/**
+ * Dočasný obrázok. Keď budú fotky, nahraďte napr.:
+ *   import { Image } from 'astro:assets';
+ *   import foto from '../assets/foto.jpg';
+ *   <Image src={foto} alt="Popis fotky" class="..." />
+ */
+import Icon from './Icon.astro';
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = 'Tu bude fotografia', class: cls = 'aspect-[4/3]' } = Astro.props;
+---
+<div
+  class:list={[
+    'relative flex items-center justify-center overflow-hidden rounded-2xl border border-navy-100 bg-gradient-to-br from-sky-soft via-white to-volt-soft',
+    cls,
+  ]}
+  role="img"
+  aria-label={label}
+>
+  <div class="grid-bg absolute inset-0"></div>
+  <div class="relative flex flex-col items-center gap-2 text-navy-600/70">
+    <Icon name="camera" class="h-10 w-10" />
+    <span class="text-sm font-medium">{label}</span>
+  </div>
+</div>

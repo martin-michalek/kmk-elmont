@@ -1,0 +1,87 @@
+---
+import { BASE, NAV, SITE, phoneHref, u } from '../config';
+import Icon from './Icon.astro';
+
+const base = BASE.replace(/\/$/, '');
+const path = (Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) || '/' : Astro.url.pathname).replace(/\/?$/, '/');
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="sticky top-0 z-40 border-b border-navy-100/80 bg-white/90 backdrop-blur">
+  <div class="container-page flex h-18 items-center justify-between gap-4">
+    <a href={u('/')} class="flex items-center gap-3" aria-label={`${SITE.name} – domov`}>
+      <img src={u('/logo.png')} alt="" width="44" height="47" class="h-11 w-auto" />
+      <span class="leading-tight">
+        <span class="block text-lg font-extrabold text-navy-900">KMK elmont</span>
+        <span class="block text-xs font-medium text-navy-600">Elektrikár {SITE.city}</span>
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Hlavná navigácia">
+      {NAV.map((item) => (
+        <a
+          href={u(item.href)}
+          class:list={[
+            'rounded-full px-4 py-2 text-[15px] font-semibold transition-colors',
+            isActive(item.href) ? 'bg-navy-50 text-navy-900' : 'text-navy-700 hover:text-navy-900',
+          ]}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden md:block">
+      {SITE.phone ? (
+        <a href={phoneHref(SITE.phone)} class="btn-primary !px-5 !py-2.5 text-sm">
+          <Icon name="phone" class="h-4 w-4" /> {SITE.phone}
+        </a>
+      ) : (
+        <a href={u('/kontakt/')} class="btn-primary !px-5 !py-2.5 text-sm">Nezáväzná ponuka</a>
+      )}
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="rounded-lg p-2 text-navy-800 md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Otvoriť menu"
+    >
+      <span class="icon-open"><Icon name="menu" /></span>
+      <span class="icon-close hidden"><Icon name="close" /></span>
+    </button>
+  </div>
+
+  <nav id="mobile-menu" class="hidden border-t border-navy-100 bg-white md:hidden" aria-label="Mobilná navigácia">
+    <div class="container-page flex flex-col py-3">
+      {NAV.map((item) => (
+        <a
+          href={u(item.href)}
+          class:list={[
+            'rounded-lg px-3 py-3 text-base font-semibold',
+            isActive(item.href) ? 'bg-navy-50 text-navy-900' : 'text-navy-700',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a href={SITE.phone ? phoneHref(SITE.phone) : u('/kontakt/')} class="btn-primary mt-3">
+        {SITE.phone ? `Zavolať ${SITE.phone}` : 'Nezáväzná ponuka'}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const btn = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Zavrieť menu' : 'Otvoriť menu');
+    btn.querySelector('.icon-open')?.classList.toggle('hidden', open);
+    btn.querySelector('.icon-close')?.classList.toggle('hidden', !open);
+  });
+</script>

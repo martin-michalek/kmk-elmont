@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import { SITE, u } from '../../config';
+import { SERVICES } from '../../data/services';
+---
+<Layout
+  title={`Služby elektrikára – ${SITE.city}`}
+  description={`Nové elektroinštalácie, rekonštrukcie elektroinštalácií, rozvádzače, zásuvky a osvetlenie pre domy a byty. ${SITE.city} a okolie.`}
+>
+  <PageHero
+    eyebrow="Služby"
+    title="Elektroinštalačné práce pre domy a byty"
+    lead="Od kompletnej elektroinštalácie v novostavbe až po výmenu starých rozvodov v paneláku. Pozrite si, s čím vám môžem pomôcť."
+    crumbs={[{ href: '/sluzby/', label: 'Služby' }]}
+  />
+
+  <section class="container-page mt-16 space-y-16 sm:mt-20 sm:space-y-24">
+    {SERVICES.map((s, i) => (
+      <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+        <div class:list={[i % 2 === 1 && 'lg:order-2']}>
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-sky-soft text-navy-800"><Icon name={s.icon} class="h-7 w-7" /></span>
+          <h2 class="mt-5 text-3xl font-extrabold">{s.title}</h2>
+          <p class="mt-4 text-lg leading-relaxed text-navy-700">{s.intro}</p>
+          <ul class="mt-6 grid gap-2 sm:grid-cols-2">
+            {s.includes.slice(0, 4).map((x) => (
+              <li class="flex gap-2 text-navy-800"><Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-sky-brand" />{x}</li>
+            ))}
+          </ul>
+          <a href={u(`/sluzby/${s.slug}/`)} class="btn-dark mt-8">Detail služby <Icon name="arrow" class="h-5 w-5" /></a>
+        </div>
+        <Placeholder label={`Foto: ${s.title.toLowerCase()}`} />
+      </article>
+    ))}
+  </section>
+
+  <CtaBanner />
+</Layout>

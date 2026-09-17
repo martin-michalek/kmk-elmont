@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { SITE, phoneHref } from '../config';
+---
+<Layout
+  title={`Kontakt – elektrikár ${SITE.city}`}
+  description={`Kontaktujte elektrikára KMK elmont – ${SITE.city} a okolie. Nezáväzná obhliadka a cenová ponuka na elektroinštaláciu. E-mail: ${SITE.email}`}
+>
+  <PageHero
+    eyebrow="Kontakt"
+    title="Napíšte mi, čo plánujete"
+    lead="Stručne popíšte, o akú prácu ide. Ozvem sa vám a dohodneme si obhliadku."
+    crumbs={[{ href: '/kontakt/', label: 'Kontakt' }]}
+  />
+
+  <section class="container-page mt-14 grid gap-10 lg:grid-cols-[1fr_1.6fr]">
+    <aside class="space-y-4">
+      {SITE.phone && (
+        <a href={phoneHref(SITE.phone)} class="card flex items-center gap-4 transition hover:border-sky-brand/50">
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-volt text-navy-950"><Icon name="phone" /></span>
+          <span><span class="block text-sm text-navy-600">Telefón</span><span class="block text-lg font-bold text-navy-900">{SITE.phone}</span></span>
+        </a>
+      )}
+      <a href={`mailto:${SITE.email}`} class="card flex items-center gap-4 transition hover:border-sky-brand/50">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name="mail" /></span>
+        <span class="min-w-0"><span class="block text-sm text-navy-600">E-mail</span><span class="block break-all text-lg font-bold text-navy-900">{SITE.email}</span></span>
+      </a>
+      <div class="card flex items-center gap-4">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name="pin" /></span>
+        <span><span class="block text-sm text-navy-600">Pôsobím</span><span class="block text-lg font-bold text-navy-900">{SITE.city} a okolie</span></span>
+      </div>
+      <div class="card flex items-center gap-4">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name="clock" /></span>
+        <span><span class="block text-sm text-navy-600">Pracovný čas</span><span class="block text-lg font-bold text-navy-900">{SITE.openingHours}</span></span>
+      </div>
+
+      <div class="rounded-2xl bg-navy-50 p-6 text-sm leading-relaxed text-navy-700">
+        <p class="font-bold text-navy-900">Fakturačné údaje</p>
+        <p class="mt-2">{SITE.legalName}<br />{SITE.postalCode} {SITE.city}<br />IČO: {SITE.ico}{SITE.dic && <><br />DIČ: {SITE.dic}</>}{SITE.icdph && <><br />IČ DPH: {SITE.icdph}</>}</p>
+      </div>
+    </aside>
+
+    <div>
+      <ContactForm />
+    </div>
+  </section>
+
+  <section class="container-page mt-16">
+    <div class="overflow-hidden rounded-2xl border border-navy-100">
+      <iframe
+        title={`Mapa – ${SITE.city}`}
+        src={`https://maps.google.com/maps?q=${encodeURIComponent(SITE.city)}&z=11&output=embed`}
+        class="h-80 w-full"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </section>
+</Layout>

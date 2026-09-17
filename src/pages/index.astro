@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { SITE, phoneHref, u } from '../config';
+import { SERVICES } from '../data/services';
+
+const benefits = [
+  { icon: 'shield', title: 'Bezpečne a podľa noriem', text: 'Práce robím v súlade s platnými normami a predpismi. Bezpečnosť vašej domácnosti je na prvom mieste.' },
+  { icon: 'handshake', title: 'Férová dohoda', text: 'Cenu dohodneme vopred po obhliadke. Viete, za čo platíte, bez nepríjemných prekvapení na konci.' },
+  { icon: 'sparkles', title: 'Čistá práca', text: 'Po práci po sebe upracem. Záleží mi na tom, aby ste sa do bytu či domu mohli hneď vrátiť.' },
+  { icon: 'user', title: 'Priamy kontakt', text: 'Komunikujete priamo so mnou, nie s call centrom. Jednoduchšia dohoda, rýchlejšie riešenia.' },
+];
+
+const steps = [
+  { title: 'Kontaktujte ma', text: 'Zavolajte alebo vyplňte formulár a stručne popíšte, čo potrebujete.' },
+  { title: 'Obhliadka', text: 'Prídem sa pozrieť na miesto, prejdeme spolu vaše požiadavky a možnosti.' },
+  { title: 'Cenová ponuka', text: 'Pripravím ponuku na mieru a dohodneme termín realizácie.' },
+  { title: 'Realizácia', text: 'Práce urobím kvalitne, v dohodnutom termíne a hotové dielo vám odovzdám.' },
+];
+---
+<Layout
+  fullTitle
+  title={`Elektrikár ${SITE.city} – elektroinštalácie domov a bytov | KMK elmont`}
+  description={`Elektrikár ${SITE.city} a okolie. Nové elektroinštalácie a rekonštrukcie elektroinštalácií v rodinných domoch a bytoch. Nezáväzná obhliadka a cenová ponuka.`}
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-sky-soft/80 via-white to-white">
+    <div class="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]"></div>
+    <div class="container-page relative grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.1fr_1fr]">
+      <div>
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-navy-100 bg-white px-4 py-1.5 text-sm font-semibold text-navy-700 shadow-sm">
+          <Icon name="pin" class="h-4 w-4 text-sky-brand" /> {SITE.city} a okolie
+        </p>
+        <h1 class="text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-6xl">
+          Elektrikár pre váš{' '}
+          <span class="relative whitespace-nowrap text-navy-800">
+            <span class="relative z-10">dom a byt</span>
+            <span class="absolute inset-x-0 bottom-1 -z-0 h-3 rounded bg-volt/50 sm:h-4"></span>
+          </span>
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-navy-700 sm:text-xl">
+          Nové elektroinštalácie a rekonštrukcie starých rozvodov. Spoľahlivo, bezpečne a s cenou dohodnutou vopred po obhliadke.
+        </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href={u('/kontakt/')} class="btn-primary">Nezáväzná obhliadka <Icon name="arrow" class="h-5 w-5" /></a>
+          {SITE.phone ? (
+            <a href={phoneHref(SITE.phone)} class="btn-secondary"><Icon name="phone" class="h-5 w-5" /> {SITE.phone}</a>
+          ) : (
+            <a href={u('/sluzby/')} class="btn-secondary">Moje služby</a>
+          )}
+        </div>
+        <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-navy-700">
+          <li class="flex items-center gap-2"><Icon name="check" class="h-4 w-4 text-sky-brand" /> Rodinné domy</li>
+          <li class="flex items-center gap-2"><Icon name="check" class="h-4 w-4 text-sky-brand" /> Byty</li>
+          <li class="flex items-center gap-2"><Icon name="check" class="h-4 w-4 text-sky-brand" /> Novostavby aj rekonštrukcie</li>
+        </ul>
+      </div>
+
+      <div class="relative">
+        <Placeholder class="aspect-[4/3] lg:aspect-square" label="Foto: Mišo pri práci" />
+        <div class="absolute -bottom-6 left-4 right-4 flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-4 shadow-lg sm:left-auto sm:right-6 sm:w-72">
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-volt-soft text-volt-dark"><Icon name="bolt" /></span>
+          <div>
+            <p class="font-bold text-navy-900">Cena po obhliadke</p>
+            <p class="text-sm text-navy-600">Presne podľa vašich potrieb</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLUŽBY -->
+  <section class="container-page mt-20 sm:mt-28" aria-labelledby="sluzby-nadpis">
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div>
+        <p class="eyebrow">Služby</p>
+        <h2 id="sluzby-nadpis" class="text-3xl font-extrabold sm:text-4xl">S čím vám pomôžem</h2>
+      </div>
+      <a href={u('/sluzby/')} class="inline-flex items-center gap-2 font-semibold text-navy-800 hover:text-sky-brand">Všetky služby <Icon name="arrow" class="h-4 w-4" /></a>
+    </div>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      {SERVICES.map((s) => (
+        <a href={u(`/sluzby/${s.slug}/`)} class="card group flex gap-5 transition hover:-translate-y-0.5 hover:border-sky-brand/50 hover:shadow-md">
+          <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-sky-soft text-navy-800 transition-colors group-hover:bg-volt group-hover:text-navy-950">
+            <Icon name={s.icon} class="h-7 w-7" />
+          </span>
+          <span>
+            <span class="block text-xl font-bold text-navy-900">{s.title}</span>
+            <span class="mt-2 block leading-relaxed text-navy-700">{s.short}</span>
+            <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky-brand">Viac <Icon name="arrow" class="h-4 w-4" /></span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- PREČO JA -->
+  <section class="mt-24 bg-navy-50/60 py-20" aria-labelledby="preco-nadpis">
+    <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+      <div>
+        <p class="eyebrow">Prečo KMK elmont</p>
+        <h2 id="preco-nadpis" class="text-3xl font-extrabold sm:text-4xl">Elektrina nie je oblasť na kompromisy</h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-700">
+          Dobre urobená elektroinštalácia vám bude slúžiť desiatky rokov. Preto si dávam záležať na každom detaile – od návrhu rozvodov až po posledný vypínač.
+        </p>
+        <a href={u('/o-mne/')} class="btn-dark mt-8">Viac o mne</a>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {benefits.map((b) => (
+          <div class="card">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-volt-soft text-volt-dark"><Icon name={b.icon} /></span>
+            <h3 class="mt-4 text-lg font-bold">{b.title}</h3>
+            <p class="mt-2 leading-relaxed text-navy-700">{b.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- AKO TO PREBIEHA -->
+  <section class="container-page mt-24" aria-labelledby="postup-nadpis">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="eyebrow">Postup</p>
+      <h2 id="postup-nadpis" class="text-3xl font-extrabold sm:text-4xl">Ako to prebieha</h2>
+      <p class="mt-4 text-lg text-navy-700">Jednoducho, prehľadne a bez zbytočného papierovania.</p>
+    </div>
+    <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((s, i) => (
+        <li class="card relative">
+          <span class="text-5xl font-extrabold text-sky-brand/25">0{i + 1}</span>
+          <h3 class="mt-2 text-lg font-bold">{s.title}</h3>
+          <p class="mt-2 leading-relaxed text-navy-700">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- OBLASŤ -->
+  <section class="container-page mt-24" aria-labelledby="oblast-nadpis">
+    <div class="grid gap-10 rounded-3xl border border-navy-100 bg-gradient-to-br from-white to-sky-soft/60 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <p class="eyebrow">Kde pôsobím</p>
+        <h2 id="oblast-nadpis" class="text-3xl font-extrabold sm:text-4xl">Elektrikár v okolí Považskej Bystrice</h2>
+        <p class="mt-4 text-lg leading-relaxed text-navy-700">
+          Sídlim v Považskej Bystrici a za prácou dochádzam do okolitých miest a obcí. Nie ste si istí, či prídem aj k vám? Stačí sa ozvať.
+        </p>
+      </div>
+      <ul class="flex flex-wrap gap-3">
+        {SITE.serviceArea.map((c) => (
+          <li class="inline-flex items-center gap-2 rounded-full border border-navy-100 bg-white px-4 py-2 font-semibold text-navy-800 shadow-sm">
+            <Icon name="pin" class="h-4 w-4 text-sky-brand" /> {c}
+          </li>
+        ))}
+        <li class="inline-flex items-center rounded-full border border-dashed border-navy-200 px-4 py-2 font-semibold text-navy-600">a okolie</li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

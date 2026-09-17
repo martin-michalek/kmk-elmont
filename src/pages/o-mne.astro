@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { SITE } from '../config';
+
+const values = [
+  { icon: 'shield', title: 'Bezpečnosť', text: 'Elektrina neodpúšta chyby. Robím tak, aby som mohol s kľudným svedomím odovzdať každú zákazku.' },
+  { icon: 'handshake', title: 'Dohoda platí', text: 'Dohodnutá cena a termín sú pre mňa záväzok. Ak sa niečo zmení, dozviete sa to vopred.' },
+  { icon: 'sparkles', title: 'Poriadok', text: 'Pracujem čisto a po sebe upracem. Váš domov nie je stavenisko.' },
+];
+---
+<Layout
+  title={`O mne – ${SITE.owner}, elektrikár ${SITE.city}`}
+  description={`${SITE.owner}, konateľ firmy ${SITE.legalName}. Elektrikár z Považskej Bystrice zameraný na elektroinštalácie v domoch a bytoch.`}
+>
+  <PageHero eyebrow="O mne" title="Volám sa Michal, ale všetci ma poznajú ako Mišo" crumbs={[{ href: '/o-mne/', label: 'O mne' }]} />
+
+  <section class="container-page mt-16 grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+    <Placeholder class="aspect-[4/5]" label="Foto: Michal Kolek" />
+
+    <div class="prose-sk">
+      <!-- TODO: upraviť text podľa skutočného príbehu (skúsenosti, vzdelanie, osvedčenia) -->
+      <p class="!text-xl !text-navy-800">
+        Som elektrikár z Považskej Bystrice a so svojou firmou <strong>{SITE.legalName}</strong> sa venujem elektroinštaláciám v rodinných domoch a bytoch.
+      </p>
+      <p>
+        Robím nové elektroinštalácie v novostavbách aj kompletné rekonštrukcie starých rozvodov. Mojím cieľom je, aby elektroinštalácia u vás doma bola bezpečná, prehľadná a slúžila bez problémov mnoho rokov.
+      </p>
+      <p>
+        So zákazníkmi komunikujem priamo – od prvého telefonátu, cez obhliadku až po odovzdanie hotovej práce. Vždy vysvetlím, čo a prečo robím, a nájdeme riešenie, ktoré dáva zmysel pre váš dom aj rozpočet.
+      </p>
+      <h2>Odborná spôsobilosť</h2>
+      <!-- TODO: doplniť konkrétne osvedčenia, napr. odborná spôsobilosť podľa vyhlášky č. 508/2009 Z. z. -->
+      <p>Elektroinštalačné práce vykonávam s potrebnou odbornou spôsobilosťou a v súlade s platnými normami STN.</p>
+
+      <dl class="mt-8 grid gap-4 sm:grid-cols-2">
+        <div class="card !p-5"><dt class="text-sm text-navy-600">Firma</dt><dd class="mt-1 font-bold text-navy-900">{SITE.legalName}</dd></div>
+        <div class="card !p-5"><dt class="text-sm text-navy-600">Sídlo</dt><dd class="mt-1 font-bold text-navy-900">{SITE.city}</dd></div>
+        <div class="card !p-5"><dt class="text-sm text-navy-600">Konateľ</dt><dd class="mt-1 font-bold text-navy-900">{SITE.owner}</dd></div>
+        <div class="card !p-5"><dt class="text-sm text-navy-600">IČO</dt><dd class="mt-1 font-bold text-navy-900">{SITE.ico}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="container-page mt-24">
+    <h2 class="text-center text-3xl font-extrabold sm:text-4xl">Na čom mi záleží</h2>
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {values.map((v) => (
+        <div class="card text-center">
+          <span class="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-volt-soft text-volt-dark"><Icon name={v.icon} /></span>
+          <h3 class="mt-4 text-xl font-bold">{v.title}</h3>
+          <p class="mt-2 leading-relaxed text-navy-700">{v.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBanner title="Poďme sa dohodnúť" />
+</Layout>

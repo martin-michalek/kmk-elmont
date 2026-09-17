@@ -1,0 +1,57 @@
+---
+import { NAV, SITE, phoneHref, u } from '../config';
+import { SERVICES } from '../data/services';
+import Icon from './Icon.astro';
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-navy-100 bg-navy-50/60">
+  <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href={u('/')} class="flex items-center gap-3">
+        <img src={u('/logo.png')} alt="Logo KMK elmont" width="56" height="60" class="h-14 w-auto" loading="lazy" />
+        <span class="text-lg font-extrabold text-navy-900">KMK elmont</span>
+      </a>
+      <p class="mt-4 text-sm leading-relaxed text-navy-700">
+        Elektroinštalácie pre rodinné domy a byty. {SITE.city} a okolie.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="mb-4 text-sm font-bold uppercase tracking-wider text-navy-900">Služby</h2>
+      <ul class="space-y-2 text-sm">
+        {SERVICES.map((s) => (
+          <li><a href={u(`/sluzby/${s.slug}/`)} class="text-navy-700 hover:text-navy-900">{s.title}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="mb-4 text-sm font-bold uppercase tracking-wider text-navy-900">Stránky</h2>
+      <ul class="space-y-2 text-sm">
+        {NAV.map((n) => (
+          <li><a href={u(n.href)} class="text-navy-700 hover:text-navy-900">{n.label}</a></li>
+        ))}
+        <li><a href={u('/ochrana-osobnych-udajov/')} class="text-navy-700 hover:text-navy-900">Ochrana osobných údajov</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="mb-4 text-sm font-bold uppercase tracking-wider text-navy-900">Kontakt</h2>
+      <ul class="space-y-3 text-sm text-navy-700">
+        {SITE.phone && (
+          <li class="flex gap-2"><Icon name="phone" class="h-5 w-5 shrink-0 text-sky-brand" /><a href={phoneHref(SITE.phone)} class="hover:text-navy-900">{SITE.phone}</a></li>
+        )}
+        <li class="flex gap-2"><Icon name="mail" class="h-5 w-5 shrink-0 text-sky-brand" /><a href={`mailto:${SITE.email}`} class="break-all hover:text-navy-900">{SITE.email}</a></li>
+        <li class="flex gap-2"><Icon name="pin" class="h-5 w-5 shrink-0 text-sky-brand" />{SITE.postalCode} {SITE.city}</li>
+        <li class="flex gap-2"><Icon name="clock" class="h-5 w-5 shrink-0 text-sky-brand" />{SITE.openingHours}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-navy-100">
+    <div class="container-page flex flex-col gap-2 py-6 text-xs text-navy-600 sm:flex-row sm:justify-between">
+      <p>© {year} {SITE.legalName} · IČO: {SITE.ico}{SITE.dic && ` · DIČ: ${SITE.dic}`}{SITE.icdph && ` · IČ DPH: ${SITE.icdph}`}</p>
+      <p>Spoločnosť zapísaná v Obchodnom registri SR.</p>
+    </div>
+  </div>
+</footer>
