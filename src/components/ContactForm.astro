@@ -19,18 +19,18 @@ const inputCls =
   <div class="grid gap-5 sm:grid-cols-2">
     <label class="block text-sm font-semibold text-navy-900">
       Meno a priezvisko *
-      <input name="name" required autocomplete="name" class={inputCls} placeholder="Ján Novák" />
+      <input name="name" required autocomplete="name" data-msg="Zadajte prosím vaše meno." class={inputCls} placeholder="Ján Novák" />
     </label>
     <label class="block text-sm font-semibold text-navy-900">
       Telefón *
-      <input name="phone" type="tel" required autocomplete="tel" class={inputCls} placeholder="+421 9xx xxx xxx" />
+      <input name="phone" type="tel" required autocomplete="tel" data-msg="Zadajte telefónne číslo, aby som sa vám mohol ozvať." class={inputCls} placeholder="+421 9xx xxx xxx" />
     </label>
   </div>
 
   <div class="grid gap-5 sm:grid-cols-2">
     <label class="block text-sm font-semibold text-navy-900">
       E-mail
-      <input name="email" type="email" autocomplete="email" class={inputCls} placeholder="vas@email.sk" />
+      <input name="email" type="email" autocomplete="email" data-msg="Skontrolujte prosím formát e-mailu, napríklad jan@email.sk." class={inputCls} placeholder="vas@email.sk" />
     </label>
     <label class="block text-sm font-semibold text-navy-900">
       Obec / mesto
@@ -48,11 +48,11 @@ const inputCls =
 
   <label class="block text-sm font-semibold text-navy-900">
     Správa *
-    <textarea name="message" rows="5" required class={inputCls} placeholder="Napr. rekonštrukcia elektroinštalácie v 3-izbovom byte, termín približne v marci…"></textarea>
+    <textarea name="message" rows="5" required data-msg="Napíšte prosím, o akú prácu ide." class={inputCls} placeholder="Napr. rekonštrukcia elektroinštalácie v 3-izbovom byte, termín približne v marci…"></textarea>
   </label>
 
   <label class="flex items-start gap-3 text-sm text-navy-700">
-    <input type="checkbox" name="consent" required class="mt-0.5 h-5 w-5 shrink-0 rounded border-navy-200 accent-navy-800" />
+    <input type="checkbox" name="consent" required data-msg="Bez súhlasu so spracovaním údajov vám nemôžem odpovedať." class="mt-0.5 h-5 w-5 shrink-0 rounded border-navy-200 accent-navy-800" />
     <span>Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu. <a href={u('/ochrana-osobnych-udajov/')} class="font-semibold text-navy-900 underline">Viac informácií</a></span>
   </label>
 
@@ -75,10 +75,63 @@ const inputCls =
     status.className = `rounded-xl px-4 py-3 text-sm font-medium ${ok ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`;
   };
 
+  // Vlastné chybové hlásenia v slovenčine – prehliadač zobrazuje svoje vlastné
+  // v jazyku prehliadača ("Please fill out this field"), preto ich nepoužívame.
+  const errCls = 'field-error mt-1.5 block text-sm font-medium text-red-600';
+
+  const clearError = (field: Element) => {
+    const label = field.closest('label');
+    label?.parentElement?.querySelectorAll(':scope > .field-error').forEach((n) => n.remove());
+    label?.querySelectorAll('.field-error').forEach((n) => n.remove());
+    field.classList.remove('!border-red-400');
+  };
+
+  const showError = (field: HTMLInputElement | HTMLTextAreaElement, msg: string) => {
+    clearError(field);
+    const span = document.createElement('span');
+    span.className = errCls;
+    span.textContent = msg;
+    const label = field.closest('label');
+    if (!label) return;
+    if (field.type === 'checkbox') label.parentElement?.insertBefore(span, label.nextSibling);
+    else label.appendChild(span);
+    field.classList.add('!border-red-400');
+  };
+
+  const messageFor = (field: HTMLInputElement | HTMLTextAreaElement) => {
+    const custom = field.dataset.msg;
+    if (field.validity.valueMissing) return custom ?? 'Toto pole je povinné.';
+    if (field.validity.typeMismatch) return custom ?? 'Skontrolujte prosím zadanú hodnotu.';
+    return custom ?? 'Skontrolujte prosím zadanú hodnotu.';
+  };
+
+  const fields = Array.from(
+    form?.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[name]:not([type=hidden]), textarea[name]') ?? [],
+  ).filter((f) => f.name !== 'botcheck');
+
+  fields.forEach((f) => {
+    f.addEventListener('input', () => f.checkValidity() && clearError(f));
+    f.addEventListener('change', () => f.checkValidity() && clearError(f));
+  });
+
+  const validate = () => {
+    let first: HTMLInputElement | HTMLTextAreaElement | null = null;
+    fields.forEach((f) => {
+      if (f.checkValidity()) {
+        clearError(f);
+      } else {
+        showError(f, messageFor(f));
+        if (!first) first = f;
+      }
+    });
+    first?.focus();
+    return !first;
+  };
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
+    if (!validate()) {
+      show('Skontrolujte prosím vyznačené polia.', false);
       return;
     }
     // hCaptcha – bez potvrdenia Web3Forms správu odmietne, tak to povieme skôr
