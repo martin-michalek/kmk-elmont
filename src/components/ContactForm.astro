@@ -56,9 +56,14 @@ const inputCls =
     <span>Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu. <a href={u('/ochrana-osobnych-udajov/')} class="font-semibold text-navy-900 underline">Viac informácií</a></span>
   </label>
 
+  <!-- hCaptcha (Web3Forms) – widget vykreslí skript nižšie, token sa posiela ako h-captcha-response -->
+  <div class="h-captcha" data-captcha="true" data-lang="sk"></div>
+
   <button type="submit" class="btn-primary w-full sm:w-auto">Odoslať dopyt</button>
   <p id="form-status" class="hidden rounded-xl px-4 py-3 text-sm font-medium" role="status" aria-live="polite"></p>
 </form>
+
+<script src="https://web3forms.com/client/script.js" async defer is:inline></script>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -76,6 +81,13 @@ const inputCls =
       form.reportValidity();
       return;
     }
+    // hCaptcha – bez potvrdenia Web3Forms správu odmietne, tak to povieme skôr
+    const captcha = form.querySelector('textarea[name="h-captcha-response"]') as HTMLTextAreaElement | null;
+    if (captcha && !captcha.value) {
+      show('Potvrďte prosím, že nie ste robot.', false);
+      return;
+    }
+
     const data = new FormData(form);
     const key = form.dataset.key;
 
