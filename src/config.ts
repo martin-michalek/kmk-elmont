@@ -7,7 +7,7 @@
 
 export const SITE = {
   // TODO: skutočná doména (rovnaká ako v astro.config.mjs)
-  url: 'https://martin-michalek.github.io',
+  url: 'https://kmkelmont.sk',
   name: 'KMK elmont',
   legalName: 'KMK elmont s. r. o.',
   tagline: 'Elektroinštalácie pre domy a byty',
