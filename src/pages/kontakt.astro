@@ -30,16 +30,23 @@ import { SITE, phoneHref } from '../config';
       </a>
       <div class="card flex items-center gap-4">
         <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name="pin" /></span>
-        <span><span class="block text-sm text-navy-600">Pôsobím</span><span class="block text-lg font-bold text-navy-900">{SITE.city} a okolie</span></span>
+        <span><span class="block text-sm text-navy-600">Sídlo a pôsobenie</span><span class="block text-lg font-bold text-navy-900">{SITE.street}, {SITE.city}</span><span class="block text-sm text-navy-600">a okolie do 30 km</span></span>
       </div>
-      <div class="card flex items-center gap-4">
+      <div class="card flex items-start gap-4">
         <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-soft text-navy-800"><Icon name="clock" /></span>
-        <span><span class="block text-sm text-navy-600">Pracovný čas</span><span class="block text-lg font-bold text-navy-900">{SITE.openingHours}</span></span>
+        <span><span class="block text-sm text-navy-600">Dostupnosť</span><span class="block text-lg font-bold text-navy-900">{SITE.openingHours}</span><span class="mt-1 block text-sm text-navy-600">{SITE.openingHoursNote}</span></span>
       </div>
+
+      {SITE.googleBusiness && (
+        <a href={SITE.googleBusiness} target="_blank" rel="noopener" class="card flex items-center gap-4 transition hover:border-sky-brand/50">
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-volt-soft text-volt-dark"><Icon name="star" /></span>
+          <span><span class="block text-sm text-navy-600">Google firemný profil</span><span class="block text-lg font-bold text-navy-900">Hodnotenia a mapa</span></span>
+        </a>
+      )}
 
       <div class="rounded-2xl bg-navy-50 p-6 text-sm leading-relaxed text-navy-700">
         <p class="font-bold text-navy-900">Fakturačné údaje</p>
-        <p class="mt-2">{SITE.legalName}<br />{SITE.postalCode} {SITE.city}<br />IČO: {SITE.ico}{SITE.dic && <><br />DIČ: {SITE.dic}</>}{SITE.icdph && <><br />IČ DPH: {SITE.icdph}</>}</p>
+        <p class="mt-2">{SITE.legalName}<br />{SITE.street}<br />{SITE.postalCode} {SITE.city}<br />IČO: {SITE.ico}{SITE.dic && <><br />DIČ: {SITE.dic}</>}{SITE.icdph && <><br />IČ DPH: {SITE.icdph}</>}</p>
       </div>
     </aside>
 
@@ -52,7 +59,7 @@ import { SITE, phoneHref } from '../config';
     <div class="overflow-hidden rounded-2xl border border-navy-100">
       <iframe
         title={`Mapa – ${SITE.city}`}
-        src={`https://maps.google.com/maps?q=${encodeURIComponent(SITE.city)}&z=11&output=embed`}
+        src={`https://maps.google.com/maps?q=${encodeURIComponent(`${SITE.street}, ${SITE.postalCode} ${SITE.city}`)}&z=12&output=embed`}
         class="h-80 w-full"
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"

@@ -21,6 +21,7 @@ export const SITE = {
   // TODO: telefón v tvare '+421 9xx xxx xxx'. Kým je prázdny, tlačidlá "Zavolať" sa nezobrazia.
   phone: '+421 907 409 225',
 
+  street: 'Horný Moštenec 9',
   city: 'Považská Bystrica',
   postalCode: '017 01',
   region: 'Trenčiansky kraj',
@@ -37,9 +38,10 @@ export const SITE = {
     'Trenčín',
   ],
 
-  // TODO: pracovný čas
-  openingHours: 'Po – Pi: 7:00 – 17:00',
-  openingHoursSchema: 'Mo-Fr 07:00-17:00',
+  // Telefón dvíha nonstop (havárie), bežné práce po dohode
+  openingHours: 'Nonstop – telefonicky a pri haváriách',
+  openingHoursNote: 'Zavolať môžete kedykoľvek. Bežné zákazky realizujem po dohode, pri havárii prídem aj mimo pracovného času.',
+  openingHoursSchema: 'Mo-Su 00:00-23:59',
 
   // Kontaktný formulár – access key z https://web3forms.com (správy chodia na kmkelmont@gmail.com)
   web3formsKey: 'c0792997-2dd0-48b3-9dd0-ea575ff53355',
@@ -47,8 +49,8 @@ export const SITE = {
   // Sociálne siete (nepovinné) – napr. 'https://www.facebook.com/...'
   facebook: '',
   instagram: '',
-  // Odkaz na Google Business profil (keď bude vytvorený)
-  googleBusiness: '',
+  // Google firemný profil (rovnaké údaje ako tu – názov, adresa, telefón)
+  googleBusiness: 'https://www.google.com/maps?cid=4637625176797749613',
 };
 
 export const NAV = [

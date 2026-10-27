@@ -42,8 +42,14 @@ const year = new Date().getFullYear();
           <li class="flex gap-2"><Icon name="phone" class="h-5 w-5 shrink-0 text-sky-brand" /><a href={phoneHref(SITE.phone)} class="hover:text-navy-900">{SITE.phone}</a></li>
         )}
         <li class="flex gap-2"><Icon name="mail" class="h-5 w-5 shrink-0 text-sky-brand" /><a href={`mailto:${SITE.email}`} class="break-all hover:text-navy-900">{SITE.email}</a></li>
-        <li class="flex gap-2"><Icon name="pin" class="h-5 w-5 shrink-0 text-sky-brand" />{SITE.postalCode} {SITE.city}</li>
+        <li class="flex gap-2"><Icon name="pin" class="h-5 w-5 shrink-0 text-sky-brand" />{SITE.street}, {SITE.postalCode} {SITE.city}</li>
         <li class="flex gap-2"><Icon name="clock" class="h-5 w-5 shrink-0 text-sky-brand" />{SITE.openingHours}</li>
+        {SITE.googleBusiness && (
+          <li class="flex gap-2">
+            <Icon name="star" class="h-5 w-5 shrink-0 text-volt" />
+            <a href={SITE.googleBusiness} target="_blank" rel="noopener" class="hover:text-navy-900">Hodnotenia na Google</a>
+          </li>
+        )}
       </ul>
     </div>
   </div>

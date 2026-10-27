@@ -38,6 +38,7 @@ const business = {
   taxID: SITE.ico,
   address: {
     '@type': 'PostalAddress',
+    streetAddress: SITE.street,
     addressLocality: SITE.city,
     postalCode: SITE.postalCode,
     addressRegion: SITE.region,
@@ -47,6 +48,7 @@ const business = {
   openingHours: SITE.openingHoursSchema,
   priceRange: 'Podľa dohody',
   sameAs: [SITE.facebook, SITE.instagram, SITE.googleBusiness].filter(Boolean),
+  ...(SITE.googleBusiness && { hasMap: SITE.googleBusiness }),
 };
 ---
 <!doctype html>
