@@ -1,8 +1,9 @@
 ---
+import { PHOTOS } from '../data/images';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import Placeholder from '../components/Placeholder.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { SITE } from '../config';
 
@@ -19,7 +20,13 @@ const values = [
   <PageHero eyebrow="O mne" title="Volám sa Michal, ale všetci ma poznajú ako Mišo" crumbs={[{ href: '/o-mne/', label: 'O mne' }]} />
 
   <section class="container-page mt-16 grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-    <Placeholder class="aspect-[4/5]" label="Foto: Michal Kolek" />
+    <Image
+      src={PHOTOS.rozvadzac2.src}
+      alt={PHOTOS.rozvadzac2.alt}
+      widths={[400, 700, 1000]}
+      sizes="(max-width: 1024px) 100vw, 420px"
+      class="aspect-[4/3] w-full rounded-2xl border border-navy-100 object-cover shadow-sm"
+    />
 
     <div class="prose-sk">
       <!-- TODO: upraviť text podľa skutočného príbehu (skúsenosti, vzdelanie, osvedčenia) -->

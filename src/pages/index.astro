@@ -1,7 +1,8 @@
 ---
+import { PHOTOS } from '../data/images';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
-import Placeholder from '../components/Placeholder.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { SITE, phoneHref, u } from '../config';
 import { SERVICES } from '../data/services';
@@ -59,8 +60,15 @@ const steps = [
       </div>
 
       <div class="relative">
-        <Placeholder class="aspect-[4/3] lg:aspect-square" label="Foto: Mišo pri práci" />
-        <div class="absolute -bottom-6 left-4 right-4 flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-4 shadow-lg sm:left-auto sm:right-6 sm:w-72">
+        <Image
+          src={PHOTOS.uvod.src}
+          alt={PHOTOS.uvod.alt}
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 1024px) 100vw, 560px"
+          class="aspect-[4/3] w-full rounded-2xl border border-navy-100 object-cover shadow-sm lg:aspect-square"
+          loading="eager"
+        />
+        <div class="mt-4 flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-4 shadow-lg sm:absolute sm:-bottom-6 sm:left-auto sm:right-6 sm:mt-0 sm:w-72">
           <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-volt-soft text-volt-dark"><Icon name="bolt" /></span>
           <div>
             <p class="font-bold text-navy-900">Cena po obhliadke</p>

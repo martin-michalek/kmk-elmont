@@ -1,4 +1,6 @@
 ---
+import { PHOTOS, SERVICE_PHOTOS } from '../../data/images';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import Icon from '../../components/Icon.astro';
@@ -13,6 +15,8 @@ export function getStaticPaths() {
 
 const { service } = Astro.props as { service: Service };
 const others = SERVICES.filter((s) => s.slug !== service.slug);
+const photoKey = SERVICE_PHOTOS[service.slug];
+const photo = photoKey ? PHOTOS[photoKey] : null;
 const url = abs(`/sluzby/${service.slug}/`);
 
 const schema = [
@@ -70,7 +74,17 @@ const schema = [
     </div>
 
     <aside class="space-y-5">
-      <Placeholder label={`Foto: ${service.title.toLowerCase()}`} />
+      {photo ? (
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          widths={[400, 700, 1000]}
+          sizes="(max-width: 1024px) 100vw, 420px"
+          class="aspect-[4/3] w-full rounded-2xl border border-navy-100 object-cover shadow-sm"
+        />
+      ) : (
+        <Placeholder label={`Foto: ${service.title.toLowerCase()}`} />
+      )}
       <div class="card bg-volt-soft/60">
         <h2 class="text-lg font-bold">Koľko to bude stáť?</h2>
         <p class="mt-2 leading-relaxed text-navy-700">

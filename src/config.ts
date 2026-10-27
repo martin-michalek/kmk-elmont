@@ -19,7 +19,7 @@ export const SITE = {
 
   email: 'kmkelmont@gmail.com',
   // TODO: telefón v tvare '+421 9xx xxx xxx'. Kým je prázdny, tlačidlá "Zavolať" sa nezobrazia.
-  phone: '',
+  phone: '+421 907 409 225',
 
   city: 'Považská Bystrica',
   postalCode: '017 01',
