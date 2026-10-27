@@ -1,9 +1,10 @@
 ---
-import { PHOTOS } from '../data/images';
+import { GALLERY, GALLERY_TEASER, PHOTOS } from '../data/images';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
+import Gallery from '../components/Gallery.astro';
 import { SITE, phoneHref, u } from '../config';
 import { SERVICES } from '../data/services';
 
@@ -13,6 +14,8 @@ const benefits = [
   { icon: 'sparkles', title: 'Čistá práca', text: 'Po práci po sebe upracem. Záleží mi na tom, aby ste sa do bytu či domu mohli hneď vrátiť.' },
   { icon: 'user', title: 'Priamy kontakt', text: 'Komunikujete priamo so mnou, nie s call centrom. Jednoduchšia dohoda, rýchlejšie riešenia.' },
 ];
+
+const teaser = GALLERY_TEASER.map((key) => GALLERY.find((g) => g.key === key)!).filter(Boolean);
 
 const steps = [
   { title: 'Kontaktujte ma', text: 'Zavolajte alebo vyplňte formulár a stručne popíšte, čo potrebujete.' },
@@ -143,6 +146,23 @@ const steps = [
         </li>
       ))}
     </ol>
+  </section>
+
+  <!-- REALIZÁCIE -->
+  <section class="container-page mt-24" aria-labelledby="realizacie-nadpis">
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div>
+        <p class="eyebrow">Realizácie</p>
+        <h2 id="realizacie-nadpis" class="text-3xl font-extrabold sm:text-4xl">Ukážky mojej práce</h2>
+        <p class="mt-3 max-w-xl text-lg text-navy-700">Kliknutím si fotku zobrazíte na celú obrazovku.</p>
+      </div>
+      <a href={u('/realizacie/')} class="inline-flex items-center gap-2 font-semibold text-navy-800 hover:text-sky-brand">
+        Všetky realizácie <Icon name="arrow" class="h-4 w-4" />
+      </a>
+    </div>
+    <div class="mt-10">
+      <Gallery items={teaser} variant="strip" />
+    </div>
   </section>
 
   <!-- OBLASŤ -->

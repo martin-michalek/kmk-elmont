@@ -1,0 +1,113 @@
+---
+/**
+ * Galéria fotiek s otvorením na celú obrazovku (natívny <dialog>, bez knižníc).
+ * Používa sa na /realizacie/ aj v ukážke na domovskej stránke.
+ */
+import { Image, getImage } from 'astro:assets';
+import { PHOTOS } from '../data/images';
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { key: keyof typeof PHOTOS; caption: string }[];
+  /** 'grid' = mriežka (podstránka), 'strip' = vodorovný pás s posúvaním (úvod) */
+  variant?: 'grid' | 'strip';
+}
+const { items, variant = 'grid' } = Astro.props;
+
+// Veľké verzie pre zobrazenie na celú obrazovku
+const full = await Promise.all(
+  items.map((item) => getImage({ src: PHOTOS[item.key].src, width: 1600, format: 'webp' })),
+);
+---
+<div
+  class:list={[
+    'gallery',
+    variant === 'grid'
+      ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3'
+      : '-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:thin]',
+  ]}
+>
+  {items.map((item, i) => (
+    <button
+      type="button"
+      class:list={[
+        'group relative block overflow-hidden rounded-2xl border border-navy-100 bg-navy-50 text-left',
+        variant === 'strip' && 'w-[78%] shrink-0 snap-start sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]',
+      ]}
+      data-index={i}
+      data-full={full[i].src}
+      aria-label={`Zväčšiť fotku: ${item.caption}`}
+    >
+      <Image
+        src={PHOTOS[item.key].src}
+        alt={PHOTOS[item.key].alt}
+        widths={[400, 700, 1000]}
+        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 380px"
+        class="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+      />
+      <span class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/85 to-transparent p-4 pt-10 text-sm font-semibold text-white">
+        {item.caption}
+      </span>
+      <span class="pointer-events-none absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-navy-800 opacity-0 transition group-hover:opacity-100">
+        <Icon name="search" class="h-5 w-5" />
+      </span>
+    </button>
+  ))}
+</div>
+
+<dialog
+  id="lightbox"
+  class="max-h-full max-w-full bg-transparent p-0 backdrop:bg-navy-950/90 open:fixed open:inset-0 open:m-auto"
+  aria-label="Zväčšená fotka"
+>
+  <div class="relative flex h-screen w-screen items-center justify-center bg-navy-950/95 p-4 sm:p-8">
+    <img id="lightbox-img" src="" alt="" class="max-h-[82vh] max-w-full rounded-xl object-contain shadow-2xl" />
+    <p id="lightbox-caption" class="absolute inset-x-0 bottom-4 text-center text-sm font-semibold text-white sm:bottom-6"></p>
+
+    <button type="button" data-close class="absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/25" aria-label="Zavrieť">
+      <Icon name="close" />
+    </button>
+    <button type="button" data-prev class="absolute left-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/25 sm:left-6" aria-label="Predchádzajúca fotka">
+      <Icon name="arrow" class="h-5 w-5 rotate-180" />
+    </button>
+    <button type="button" data-next class="absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/25 sm:right-6" aria-label="Ďalšia fotka">
+      <Icon name="arrow" class="h-5 w-5" />
+    </button>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const caption = document.getElementById('lightbox-caption');
+  // všetky fotky na stránke (mriežka aj pás) tvoria jeden zoznam
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.gallery button[data-full]'));
+  let current = 0;
+
+  const open = (i: number) => {
+    if (!dialog || !img || buttons.length === 0) return;
+    current = (i + buttons.length) % buttons.length;
+    const btn = buttons[current];
+    const thumb = btn.querySelector('img');
+    img.src = btn.dataset.full ?? '';
+    img.alt = thumb?.alt ?? '';
+    if (caption) caption.textContent = thumb?.alt ?? '';
+    if (!dialog.open) dialog.showModal();
+  };
+
+  buttons.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+
+  dialog?.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+  dialog?.querySelector('[data-prev]')?.addEventListener('click', () => open(current - 1));
+  dialog?.querySelector('[data-next]')?.addEventListener('click', () => open(current + 1));
+
+  // klik mimo fotky zavrie, šípky prepínajú (Esc rieši <dialog> sám)
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog || (e.target as HTMLElement).tagName === 'DIV') dialog.close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!dialog?.open) return;
+    if (e.key === 'ArrowRight') open(current + 1);
+    if (e.key === 'ArrowLeft') open(current - 1);
+  });
+</script>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { abs, BUSINESS_ID, SITE, u } from '../config';
+import { GALLERY } from '../data/images';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: `Realizácie – KMK elmont, elektrikár ${SITE.city}`,
+    description: 'Fotografie z elektroinštalačných prác v rodinných domoch a bytoch.',
+    url: abs('/realizacie/'),
+    about: { '@id': BUSINESS_ID },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Domov', item: abs('/') },
+      { '@type': 'ListItem', position: 2, name: 'Realizácie', item: abs('/realizacie/') },
+    ],
+  },
+];
+---
+<Layout
+  title="Realizácie – fotky z našich elektroinštalácií"
+  description={`Fotografie z elektroinštalačných prác v domoch a bytoch – rozvádzače, nové rozvody, rekonštrukcie, zásuvky a vypínače. ${SITE.city} a okolie.`}
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Realizácie"
+    title="Pozrite si moju prácu"
+    lead="Fotky z dokončených aj rozpracovaných zákaziek – rozvádzače, nové rozvody v novostavbách, rekonštrukcie bytov a hotové zásuvky či vypínače."
+    crumbs={[{ href: '/realizacie/', label: 'Realizácie' }]}
+  />
+
+  <section class="container-page mt-14">
+    <Gallery items={GALLERY} />
+    <p class="mt-8 text-center text-navy-600">
+      Fotiek postupne pribúda. Chcete podobnú prácu u vás?
+      <a href={u('/kontakt/')} class="font-semibold text-navy-900 underline">Napíšte mi</a>.
+    </p>
+  </section>
+
+  <CtaBanner title="Páči sa vám, čo vidíte?" text="Ozvite sa a dohodneme si nezáväznú obhliadku u vás." />
+</Layout>

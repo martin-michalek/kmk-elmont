@@ -55,6 +55,7 @@ export const NAV = [
   { href: '/', label: 'Domov' },
   { href: '/sluzby/', label: 'Služby' },
   { href: '/cennik/', label: 'Cenník' },
+  { href: '/realizacie/', label: 'Realizácie' },
   { href: '/o-mne/', label: 'O mne' },
   { href: '/kontakt/', label: 'Kontakt' },
 ];
